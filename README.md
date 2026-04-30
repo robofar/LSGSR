@@ -4,12 +4,9 @@ Renderer for 3D Gaussian Splatting scenes that are too large to fit fully in GPU
 
 ## Demo
 
-<!-- Replace with your own recording -->
-![LSGS interactive viewer](docs/demo.gif)
-
-<!-- Or for a video:
-<video src="docs/demo.mp4" controls></video>
--->
+<video width="600" controls muted>
+  <source src="media/demo.mp4" type="video/mp4">
+</video>
 
 ## How LOD works
 
