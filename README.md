@@ -4,9 +4,7 @@ Renderer for 3D Gaussian Splatting scenes that are too large to fit fully in GPU
 
 ## Demo
 
-<video width="600" controls muted>
-  <source src="media/demo.mp4" type="video/mp4">
-</video>
+<video src="media/demo.mp4">
 
 ## How LOD works
 
