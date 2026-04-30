@@ -51,7 +51,6 @@ add_library(ply_loader
 target_include_directories(ply_loader PUBLIC
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/third_party/happly
-    ${CMAKE_SOURCE_DIR}/third_party/stb
 )
 target_link_libraries(ply_loader PUBLIC Threads::Threads rerun_sdk glfw OpenGL::GL)
 

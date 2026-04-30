@@ -97,23 +97,3 @@ The viewer captures the cursor on launch (FPS-style mouse look). Press **Esc** o
 | `P` | Print current camera pose (position, yaw, pitch, forward) |
 | `Esc` | First press: release cursor. Second press: quit. |
 | Left click | Recapture cursor after release |
-
-## Project layout
-
-```
-src/
-  main.cpp                 CLI, scene framing, viewer entry
-  ply_loader.cpp           happly-based loader + activations
-  gaussian.cpp             outlier filter
-  morton.cpp               spatial sort
-  octree.cpp               parallel octree build + per-node summaries
-  frustum_culling.cpp      camera/frustum math + per-frame gather
-  interactive_viewer.cpp   GLFW window, free-fly camera, hotkeys
-  renderer.cu              CUDA streaming + Inria forward + image pack
-  visualizer.cpp           debug visualization (Rerun)
-include/                   matching headers
-third_party/
-  happly/                  submodule (PLY parser)
-  diff-gaussian-rasterization/   submodule (Inria rasterizer)
-  stb/                     vendored
-```
