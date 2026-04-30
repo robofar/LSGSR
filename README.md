@@ -4,7 +4,7 @@ Renderer for 3D Gaussian Splatting scenes that are too large to fit fully in GPU
 
 ## Demo
 
-https://github.com/robofar/LSGSR/releases/download/demo/demo.mp4
+<video src="https://github.com/robofar/LSGSR/releases/download/demo/demo.mp4" controls width="720"></video>
 
 ## How LOD works
 
