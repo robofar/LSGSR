@@ -31,12 +31,12 @@ The pipeline uses a classic **octree + distance-based voxel LOD selection + Gaus
 
 ## Requirements
 
+- Linux (developed on Ubuntu)
+- **NVIDIA GPU**
 - **CUDA Toolkit** 12.x or 13.x and a compatible NVIDIA driver
-- **NVIDIA GPU** (Compute Capability detected automatically via `CUDA_ARCHITECTURES native`)
 - **OpenGL** (system package)
 - **CMake** ≥ 3.24
 - **C++17** compiler (GCC 11+ tested)
-- Linux (developed on Ubuntu)
 
 GLFW and the Rerun C++ SDK are pulled in automatically by CMake `FetchContent` — no system install needed.
 
