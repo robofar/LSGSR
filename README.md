@@ -15,19 +15,19 @@ Renderer for 3D Gaussian Splatting scenes that are too large to fit fully in GPU
 
 The pipeline uses a classic **octree + distance-based voxel LOD selection + Gaussian summaries**:
 
-1. **Octree partitioning.** The scene is wrapped in a cubic bounding box and recursively split into 8 children. Cells stop splitting once they contain few enough gaussians (or hit a max depth). The original gaussians live only at the bottom of the tree.
+1. **Octree build.** The scene is partitioned into an octree where leaf nodes contain no more than 256 Gaussians or are created upon reaching a maximum depth. The original Gaussians are stored in the leaf nodes.
 
-2. **Per-node Gaussian summaries.** Every internal node stores a small set of "summary gaussians" that approximate all the gaussians inside it. They are computed by fitting Gaussians to the statistical moments (mean, covariance, color) of the children, so each summary captures the rough position, orientation, size, and color of a chunk of the scene without having to draw thousands of individualP gaussians.
+2. **Per-node Gaussian summaries.** Each internal node approximates the Gaussians in its eight children using a small set of *summary Gaussians*. The node’s volume is split into a `6×6×6` grid, and each cell fits a representative Gaussian from the Gaussians it contains (via mean, covariance, and color). These summaries capture the coarse structure and appearance of the region.
 
-3. **Per-frame selection (the LOD decision).** For each frame, the renderer walks the octree and asks two questions per node:
-   - **Is the node visible?** Cull it against the camera frustum if not.
-   - **Is the node small on screen?** If the node's projected size on screen is below a threshold, draw its summary instead of recursing further. If it's still large, recurse into the children — and eventually fall through to the original gaussians for nearby cells.
+3. **Per-frame Gaussians selection (the LOD decision).** For each frame, the renderer traverses the octree and checks:
+   - **Is the node inside camera frustum?** If not, skip the node and its subtree.
+   - **Is the node small enough on screen?** If yes, use that node’s Gaussians. If not, recurse into its children.
 
-   This means **far / coarse parts of the scene get summaries** (cheap), and **only what's close to the camera gets the full-detail gaussians** (expensive but worth it).
+   Result: distant areas use coarse summaries, while nearby regions use fine Gaussians.
 
-4. **Streaming to the GPU.** The selected subset is uploaded to the GPU each frame using overlapped chunked transfers, so the upload is happening at the same time as the next chunk is being prepared on the CPU. Nothing is uploaded once-and-for-all — large scenes that wouldn't fit in VRAM are still rendered because only a fraction is resident at any moment.
+4. **Streaming to the GPU.** Each frame, only the selected Gaussians are uploaded to the GPU. Nothing is kept permanently in VRAM—only a small, temporary working set is resident at any time.
 
-5. **Rasterization.** The Inria `diff-gaussian-rasterization` forward kernel rasterizes the selected gaussians, and the resulting image is shown via OpenGL.
+5. **Rasterization.** The selected Gaussians are rasterized using Inria’s `diff-gaussian-rasterization` forward kernel, and the final image is displayed via OpenGL. GLFW is used to handle the window and input, allowing real-time navigation through the scene.
 
 ## Requirements
 
